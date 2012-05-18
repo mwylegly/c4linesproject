@@ -44,13 +44,18 @@
     //self.canvas.backgroundColor = [UIColor colorWithRed:.95 green:.7 blue:.5 alpha:1];
     
     //changing these variables changes how the program renders out.
-    pointCount = 35;
-    pointDist = 15;
-    randomSize1 = 15;
+    pointCount = 3;
+    pointDist = 3;
+    randomSize1 = 1;
     randomSize2 = 1;
     randomPixSize = YES;
+<<<<<<< HEAD
     randomPixDistance = YES;
     multiPicture = YES;
+=======
+    randomPixDistance = NO;
+    multiPicture = NO;
+>>>>>>> commit with merge
     
     shouldRenderWebbing = YES;
     
@@ -77,11 +82,57 @@
     [newCamera captureImage];
 }
 
+<<<<<<< HEAD
 -(void)renderCircles {
+=======
+-(void)renderMethod {
+    
+    //determines whther 1 or 2 images are used.
+    if (multiPicture == YES) {
+    } else {
+        testImage2 = testImage;
+    }
+    
+    //gets the postion of where the screen is touched
+    
+    C4Log(@"%4.2f,%4.2f", touchPoint.x, touchPoint.y);
+    
+    C4Vector *getVecColor1 = [C4Vector vectorWithX:0 Y:0 Z:0];
+    C4Vector *getVecColor2 = [C4Vector vectorWithX:0 Y:0 Z:0];
+    
+>>>>>>> commit with merge
     for (int i = 0; i < pointCount; i++) {
                 
         
+<<<<<<< HEAD
         pointList[i] = CGPointZero;
+=======
+        imageSelc = [C4Math randomInt:(2)];
+        
+        if (randomPixDistance == YES) {
+            pointOriginWidth = [C4Math randomIntBetweenA:(0) 
+                                                    andB:(self.canvas.frame.size.width)];
+            
+            pointOriginHeight = [C4Math randomIntBetweenA:(0) 
+                                                     andB:(self.canvas.frame.size.height)];
+        } else {
+            pointOriginWidth = [C4Math randomIntBetweenA:(touchPoint.x - (20 * pointDist)) 
+                                                    andB:(touchPoint.x + (20 * pointDist))];
+            
+            pointOriginHeight = [C4Math randomIntBetweenA:(touchPoint.y - (20 * pointDist)) 
+                                                     andB:(touchPoint.y + (20 * pointDist))];
+        }
+        
+        
+        
+        
+        pointList[i] = CGPointMake(pointOriginWidth, pointOriginHeight); 
+        //C4Log(@"%4.2f,%4.2f", pointList[i]);
+        
+        xPointValue = pointList[i].x;
+        yPointValue = pointList[i].y;
+        //C4Log(@"%4.2f,%4.2f", xPointValue, yPointValue);
+>>>>>>> commit with merge
         
         C4Vector *getVecColorPoint;
         
