@@ -14,6 +14,7 @@
 -(CGFloat)lineAlphaFromDistance:(CGFloat)distance;
 -(void)renderWebbing;
 -(void)renderCircles;
+//hi mike
 
 @property C4Image *image1, *image2;
 @end
@@ -68,7 +69,7 @@
 -(void)imageWasCaptured {
     self.image1 = newCamera.capturedImage;
     self.image1.frame = self.canvas.frame;
-
+    
     if (multiPicture == NO) {
         self.image2 = self.image1;    
     } else {
@@ -102,7 +103,6 @@
     
 >>>>>>> commit with merge
     for (int i = 0; i < pointCount; i++) {
-                
         
 <<<<<<< HEAD
         pointList[i] = CGPointZero;
@@ -145,25 +145,22 @@
                                                   andB:(touchPoint.x + (20 * pointDist))];
             pointList[i].y = [C4Math randomIntBetweenA:(touchPoint.y - (20 * pointDist)) 
                                                   andB:(touchPoint.y + (20 * pointDist))];
-            
             getVecColorPoint = [self.image2 rgbVectorAt:pointList[i]];
         }
-
+        
         [getVecColorPoint divideScalar:255.0];
-
+        
         if (randomPixSize == YES) {
             pixelValue = [C4Math randomIntBetweenA:randomSize1
                                               andB:randomSize2];
-            
         } else {
             pixelValue = randomSize1;
         }
         
         UIColor *currentEllipseColor = [UIColor colorWithRed:getVecColorPoint.x 
-                                   green:getVecColorPoint.y 
-                                    blue:getVecColorPoint.z 
-                                   alpha:.65];
-        
+                                                       green:getVecColorPoint.y 
+                                                        blue:getVecColorPoint.z 
+                                                       alpha:.65];
         CGFloat x, y, w, h;
         x = pointList[i].x-(pixelValue/2);
         y = pointList[i].y-(pixelValue/2);
@@ -200,13 +197,13 @@
             CGFloat distance = [C4Vector distanceBetweenA:linePoints[0] andB:linePoints[1]];
             CGFloat webbingLineWidth = [self lineWidthFromDistance:distance];
             webbing.lineWidth = webbingLineWidth;
-
+            
             CGFloat webbingAlpha = [self lineAlphaFromDistance:distance];
             
             if(webbingLineWidth > 0 && webbingAlpha > 0) {
                 C4Vector *getVecColor1 = [C4Vector vectorWithX:0 Y:0 Z:0];
                 C4Vector *getVecColor2 = [C4Vector vectorWithX:0 Y:0 Z:0];
-
+                
                 //4 cases to pull point colors from, random
                 switch ([C4Math randomInt:(4)]) {
                     case 0:
