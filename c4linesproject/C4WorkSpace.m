@@ -9,69 +9,67 @@
 #import "C4WorkSpace.h"
 #import "C4Vector.h"
 
-@implementation C4WorkSpace{
-    
-    
+@interface C4WorkSpace ()
+-(CGFloat)lineWidthFromDistance:(CGFloat)distance;
+-(CGFloat)lineAlphaFromDistance:(CGFloat)distance;
+-(void)renderWebbing;
+-(void)renderCircles;
+
+@property C4Image *image1, *image2;
+@end
+
+@implementation C4WorkSpace{    
     CGPoint pointList[300];
     CGPoint touchPoint;
-    C4Shape *elPoints;
-    float xPointValue, yPointValue;
-    int pointOriginWidth, pointOriginHeight;
-    int imageSelc;
-    int imageSelcLine;
-    
     
     int pointCount;
     int pointDist;
     int randomSize1;
     int randomSize2;
     int pixelValue;
-    bool hideLines;
     bool randomPixSize;
     bool randomPixDistance;
     bool multiPicture;
-    C4Image *testImage;
-    C4Image *testImage2;
     C4Shape *lineTest;
     C4Camera *newCamera;
     
+    BOOL shouldRenderWebbing;
 }
 
+@synthesize image1, image2;
 
 -(void)setup {
     
     //sets up background colour, and images, comment out the next line to change background colour to white.
     //self.canvas.backgroundColor = [UIColor colorWithRed:.95 green:.7 blue:.5 alpha:1];
-    testImage2 = [C4Image imageNamed:@"test_img.jpg"];
     
     //changing these variables changes how the program renders out.
     pointCount = 35;
     pointDist = 15;
     randomSize1 = 15;
     randomSize2 = 1;
-    hideLines = NO;
     randomPixSize = YES;
-    randomPixDistance = FALSE;
-    multiPicture = TRUE;
+    randomPixDistance = YES;
+    multiPicture = YES;
     
-    if (pointCount < 75) {
-        pointCount = pointCount;
-    } else {
-        pointCount = 75;
-    }
+    shouldRenderWebbing = YES;
+    
+    if(pointCount > 75) pointCount = 75;
     
     newCamera = [C4Camera cameraWithFrame:CGRectZero];
     [self addCamera:newCamera];
-    newCamera.userInteractionEnabled = NO;
-    
 }
 
 -(void)imageWasCaptured {
-    C4Log(@"%4.2f", 2);
-    testImage = newCamera.capturedImage;
-    testImage.frame = self.canvas.frame;
-    //[self.canvas addImage:testImage3];
-    [self renderMethod];
+    self.image1 = newCamera.capturedImage;
+    self.image1.frame = self.canvas.frame;
+
+    if (multiPicture == NO) {
+        self.image2 = self.image1;    
+    } else {
+        self.image2 = [C4Image imageNamed:@"test_img.jpg"];
+    }
+    [self renderCircles];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -79,172 +77,164 @@
     [newCamera captureImage];
 }
 
--(void)renderMethod {
-    
-    //determines whther 1 or 2 images are used.
-    if (multiPicture == TRUE) {
-    } else {
-        testImage2 = testImage;
-    }
-    
-    //gets the postion of where the screen is touched
-    
-    C4Log(@"%4.2f,%4.2f", touchPoint.x, touchPoint.y);
-    
-    C4Vector *getVecColor1 = [C4Vector vectorWithX:0 Y:0 Z:0];
-    C4Vector *getVecColor2 = [C4Vector vectorWithX:0 Y:0 Z:0];
-    
+-(void)renderCircles {
     for (int i = 0; i < pointCount; i++) {
+                
         
-        imageSelc = [C4Math randomInt:(2)];
+        pointList[i] = CGPointZero;
         
-        if (randomPixDistance == TRUE) {
-            pointOriginWidth = [C4Math randomIntBetweenA:(0) 
-                                                    andB:(self.canvas.frame.size.width)];
-            
-            pointOriginHeight = [C4Math randomIntBetweenA:(0) 
-                                                     andB:(self.canvas.frame.size.height)];
+        C4Vector *getVecColorPoint;
+        
+        if(randomPixDistance) {
+            pointList[i].x = [C4Math randomInt:(self.canvas.frame.size.width)];
+            pointList[i].y = [C4Math randomInt:(self.canvas.frame.size.height)];
+            getVecColorPoint = [self.image1 rgbVectorAt:pointList[i]];
         } else {
-            pointOriginWidth = [C4Math randomIntBetweenA:(touchPoint.x - (20 * pointDist)) 
-                                                    andB:(touchPoint.x + (20 * pointDist))];
+            pointList[i].x = [C4Math randomIntBetweenA:(touchPoint.x - (20 * pointDist))
+                                                  andB:(touchPoint.x + (20 * pointDist))];
+            pointList[i].y = [C4Math randomIntBetweenA:(touchPoint.y - (20 * pointDist)) 
+                                                  andB:(touchPoint.y + (20 * pointDist))];
             
-            pointOriginHeight = [C4Math randomIntBetweenA:(touchPoint.y - (20 * pointDist)) 
-                                                     andB:(touchPoint.y + (20 * pointDist))];
+            getVecColorPoint = [self.image2 rgbVectorAt:pointList[i]];
         }
-        
-        
-        
-        
-        pointList[i] = CGPointMake(pointOriginWidth, pointOriginHeight); 
-        //C4Log(@"%4.2f,%4.2f", pointList[i]);
-        
-        xPointValue = pointList[i].x;
-        yPointValue = pointList[i].y;
-        //C4Log(@"%4.2f,%4.2f", xPointValue, yPointValue);
-        
-        C4Vector *getVecColorPoint = [C4Vector vectorWithX:0 Y:0 Z:0];
-        
-        if (imageSelc == 1) {
-            getVecColorPoint = [testImage rgbVectorAt:pointList[i]];
-        } else {
-            getVecColorPoint = [testImage2 rgbVectorAt:pointList[i]];
-        }
-        
-        UIColor *pointCol;
-        
+
         [getVecColorPoint divideScalar:255.0];
-        
-        if (randomPixSize == TRUE) {
-            pixelValue = [C4Math randomIntBetweenA:randomSize2
-                                              andB:randomSize1];
+
+        if (randomPixSize == YES) {
+            pixelValue = [C4Math randomIntBetweenA:randomSize1
+                                              andB:randomSize2];
+            
         } else {
             pixelValue = randomSize1;
         }
         
-        
-        pointCol = [UIColor colorWithRed:getVecColorPoint.x 
+        UIColor *currentEllipseColor = [UIColor colorWithRed:getVecColorPoint.x 
                                    green:getVecColorPoint.y 
                                     blue:getVecColorPoint.z 
                                    alpha:.65];
         
-        elPoints = [C4Shape ellipse:CGRectMake(pointOriginWidth-(pixelValue/2), pointOriginHeight-(pixelValue/2), pixelValue, pixelValue)];
+        CGFloat x, y, w, h;
+        x = pointList[i].x-(pixelValue/2);
+        y = pointList[i].y-(pixelValue/2);
+        w = pixelValue;
+        h = pixelValue;
         
-        elPoints.lineWidth = .75f;
-        elPoints.fillColor = pointCol;
-        elPoints.strokeColor = [UIColor clearColor];
+        C4Shape *currentEllipse = [C4Shape ellipse:CGRectMake(x,y,w,h)];
+        currentEllipse.lineWidth = .75f;
+        currentEllipse.fillColor = currentEllipseColor;
+        currentEllipse.strokeColor = [UIColor clearColor];
         
-        [self.canvas addShape:elPoints];
+        [self.canvas addShape:currentEllipse];
     }
     
-    if (hideLines == YES) {
-    } else {
-        for (int index = 0; index < pointCount; index++) {
-            for (int index2 = index+1; index2 < pointCount; index2 ++) {
-                
-                imageSelcLine = [C4Math randomInt:(4)];
-                
-                CGPoint linePoints[2] = {
-                    CGPointMake(pointList[index].x, pointList[index].y),
-                    CGPointMake(pointList[index2].x, pointList[index2].y)
-                };
-                
-                CGFloat deltay = linePoints[0].y - linePoints[1].y;
-                CGFloat deltax = linePoints[0].x - linePoints[1].x;
-                CGFloat distance = sqrt(pow(deltax,2) + pow(deltay,2));
-                
-                C4Shape *webbing = [C4Shape line:linePoints];
-                webbing.animationDuration = 0.0f;
-                CGFloat alpha = 0.0f;
-                
-                testImage.origin = CGPointMake(384, 512);
-                testImage2.center = CGPointMake(384, 512);
-                
-                //            UIColor *c = [testImage colorAt:linePoints[0]];
-                //            C4Log(@"%@",c);
-                
-                if (imageSelcLine == 1) {
-                    getVecColor1 = [testImage rgbVectorAt:linePoints[1]];
-                    getVecColor2 = [testImage rgbVectorAt:linePoints[0]];
-                } else if (imageSelcLine == 2) {
-                    getVecColor1 = [testImage rgbVectorAt:linePoints[1]];
-                    getVecColor2 = [testImage2 rgbVectorAt:linePoints[0]];
-                } else if (imageSelcLine == 3) {
-                    getVecColor1 = [testImage2 rgbVectorAt:linePoints[1]];
-                    getVecColor2 = [testImage rgbVectorAt:linePoints[0]];
-                } else {
-                    getVecColor1 = [testImage2 rgbVectorAt:linePoints[1]];
-                    getVecColor2 = [testImage2 rgbVectorAt:linePoints[0]];
+    if (shouldRenderWebbing == YES) {
+        [self renderWebbing];
+    }
+}
+
+-(void)renderWebbing {
+    for (int index = 0; index < pointCount; index++) {
+        for (int index2 = index+1; index2 < pointCount; index2 ++) {
+            
+            C4Shape *webbing = [C4Shape new];
+            webbing.animationDuration = 0.0f;
+            
+            CGPoint linePoints[2] = {
+                CGPointMake(pointList[index].x, pointList[index].y),
+                CGPointMake(pointList[index2].x, pointList[index2].y)
+            };
+            
+            [webbing line:linePoints];
+            
+            CGFloat distance = [C4Vector distanceBetweenA:linePoints[0] andB:linePoints[1]];
+            CGFloat webbingLineWidth = [self lineWidthFromDistance:distance];
+            webbing.lineWidth = webbingLineWidth;
+
+            CGFloat webbingAlpha = [self lineAlphaFromDistance:distance];
+            
+            if(webbingLineWidth > 0 && webbingAlpha > 0) {
+                C4Vector *getVecColor1 = [C4Vector vectorWithX:0 Y:0 Z:0];
+                C4Vector *getVecColor2 = [C4Vector vectorWithX:0 Y:0 Z:0];
+
+                //4 cases to pull point colors from, random
+                switch ([C4Math randomInt:(4)]) {
+                    case 0:
+                        getVecColor1 = [self.image1 rgbVectorAt:linePoints[1]];
+                        getVecColor2 = [self.image1 rgbVectorAt:linePoints[0]];
+                        break;
+                    case 1:
+                        getVecColor1 = [self.image1 rgbVectorAt:linePoints[1]];
+                        getVecColor2 = [self.image2 rgbVectorAt:linePoints[0]];
+                        break;
+                    case 2:
+                        getVecColor1 = [self.image2 rgbVectorAt:linePoints[1]];
+                        getVecColor2 = [self.image1 rgbVectorAt:linePoints[0]];
+                        break;
+                    case 3:
+                        getVecColor1 = [self.image2 rgbVectorAt:linePoints[1]];
+                        getVecColor2 = [self.image2 rgbVectorAt:linePoints[0]];
+                        break;
+                    default:
+                        break;
                 }
-                
                 
                 [getVecColor1 add:getVecColor2];
                 [getVecColor1 divideScalar:2.0];
                 [getVecColor1 divideScalar:255.0];
                 
-                
-                
-                if (distance > 500) {
-                    alpha = 0.0;
-                    webbing.lineWidth = .5f;
-                }  else if(distance > 400 && distance < 500) {
-                    alpha = 0.0;
-                    webbing.lineWidth = .75f;
-                } else if(distance > 300 && distance < 400) {
-                    alpha = 0.05;
-                    webbing.lineWidth = 1.0f;
-                } else if(distance > 200 && distance < 300){
-                    alpha = 0.1;
-                    webbing.lineWidth = 1.25f;   
-                } else if(distance > 100 && distance < 200){
-                    alpha = 0.2;
-                    webbing.lineWidth = 1.5f;   
-                } else if(distance > 50 && distance < 100){
-                    alpha = 0.4;
-                    webbing.lineWidth = 1.75f;
-                } else if(distance > 25 && distance < 50){
-                    alpha = 0.6;
-                    webbing.lineWidth = 2.0f;
-                } else {
-                    alpha = 0.8;
-                    webbing.lineWidth = 2.5f;
-                }
-                
                 UIColor *c;
                 if(getVecColor1 != nil) {
-                    C4Log(@"not nil %4.2f,%4.2f,%4.2f,%4.2f", getVecColor1.x, getVecColor1.y, getVecColor1.z, alpha);
                     c = [UIColor colorWithRed:getVecColor1.x 
                                         green:getVecColor1.y 
                                          blue:getVecColor1.z 
-                                        alpha:alpha];
+                                        alpha:webbingAlpha];
                 }
                 
                 webbing.strokeColor = c;
                 [self.canvas addShape:webbing];
+            } else {
+                webbing = nil;
             }
         }
     }
-    
 }
 
+-(CGFloat)lineWidthFromDistance:(CGFloat)distance {
+    if (distance > 500) {
+        return 0.0f;
+    }  else if(distance > 400 && distance < 500) {
+        return .75f;
+    } else if(distance > 300 && distance < 400) {
+        return 1.0f;
+    } else if(distance > 200 && distance < 300){
+        return 1.25f;   
+    } else if(distance > 100 && distance < 200){
+        return 1.5f;   
+    } else if(distance > 50 && distance < 100){
+        return 1.75f;
+    } else if(distance > 25 && distance < 50){
+        return 2.0f;
+    } 
+    return 2.5f;
+}
+
+-(CGFloat)lineAlphaFromDistance:(CGFloat)distance {
+    if (distance > 500) {
+        return 0.0f;
+    }  else if(distance > 400 && distance < 500) {
+        return 0.0f;
+    } else if(distance > 300 && distance < 400) {
+        return 0.05f;
+    } else if(distance > 200 && distance < 300){
+        return 0.1f;
+    } else if(distance > 100 && distance < 200){
+        return 0.2f;
+    } else if(distance > 50 && distance < 100){
+        return 0.4f;
+    } else if(distance > 25 && distance < 50){
+        return 0.6f;
+    }
+    return 0.8;
+}
 
 @end
