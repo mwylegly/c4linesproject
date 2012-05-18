@@ -23,10 +23,6 @@
 		7A41D58B1565A260007DBD3F /* C4AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A41D58A1565A260007DBD3F /* C4AppDelegate.m */; };
 		7A41D58D1565A260007DBD3F /* C4WorkSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A41D58C1565A260007DBD3F /* C4WorkSpace.m */; };
 		7A41D5AF1565A260007DBD3F /* libC4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A41D5AE1565A260007DBD3F /* libC4.a */; };
-		7A41D5B21565A260007DBD3F /* C4Loop.aif in Resources */ = {isa = PBXBuildFile; fileRef = 7A41D5B11565A260007DBD3F /* C4Loop.aif */; };
-		7A41D5B41565A260007DBD3F /* C4Sky.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A41D5B31565A260007DBD3F /* C4Sky.png */; };
-		7A41D5B61565A260007DBD3F /* C4Table.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A41D5B51565A260007DBD3F /* C4Table.png */; };
-		7A41D5B81565A261007DBD3F /* inception.mov in Resources */ = {isa = PBXBuildFile; fileRef = 7A41D5B71565A261007DBD3F /* inception.mov */; };
 		7A41D5BB1565A261007DBD3F /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A41D5BA1565A261007DBD3F /* iTunesArtwork.png */; };
 		7A41D5BE1565A261007DBD3F /* C4Canvas.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A41D5BC1565A261007DBD3F /* C4Canvas.xib */; };
 		7A41D5C01565A261007DBD3F /* C4LogoiPad-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A41D5BF1565A261007DBD3F /* C4LogoiPad-01.png */; };
@@ -99,10 +95,6 @@
 		7A41D5AC1565A260007DBD3F /* C4Window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = C4Window.h; path = Headers/C4Window.h; sourceTree = "<group>"; };
 		7A41D5AD1565A260007DBD3F /* UITouch+C4Touch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UITouch+C4Touch.h"; path = "Headers/UITouch+C4Touch.h"; sourceTree = "<group>"; };
 		7A41D5AE1565A260007DBD3F /* libC4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libC4.a; path = Library/libC4.a; sourceTree = "<group>"; };
-		7A41D5B11565A260007DBD3F /* C4Loop.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = C4Loop.aif; path = Media/C4Loop.aif; sourceTree = "<group>"; };
-		7A41D5B31565A260007DBD3F /* C4Sky.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = C4Sky.png; path = Media/C4Sky.png; sourceTree = "<group>"; };
-		7A41D5B51565A260007DBD3F /* C4Table.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = C4Table.png; path = Media/C4Table.png; sourceTree = "<group>"; };
-		7A41D5B71565A261007DBD3F /* inception.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = inception.mov; path = Media/inception.mov; sourceTree = "<group>"; };
 		7A41D5BA1565A261007DBD3F /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iTunesArtwork.png; path = Logos/iTunesArtwork.png; sourceTree = "<group>"; };
 		7A41D5BD1565A261007DBD3F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/C4Canvas.xib; sourceTree = "<group>"; };
 		7A41D5BF1565A261007DBD3F /* C4LogoiPad-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "C4LogoiPad-01.png"; path = "Logos/C4LogoiPad-01.png"; sourceTree = "<group>"; };
@@ -251,10 +243,6 @@
 		7A41D5B01565A260007DBD3F /* Media */ = {
 			isa = PBXGroup;
 			children = (
-				7A41D5B11565A260007DBD3F /* C4Loop.aif */,
-				7A41D5B31565A260007DBD3F /* C4Sky.png */,
-				7A41D5B51565A260007DBD3F /* C4Table.png */,
-				7A41D5B71565A261007DBD3F /* inception.mov */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -331,10 +319,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A41D5841565A260007DBD3F /* InfoPlist.strings in Resources */,
-				7A41D5B21565A260007DBD3F /* C4Loop.aif in Resources */,
-				7A41D5B41565A260007DBD3F /* C4Sky.png in Resources */,
-				7A41D5B61565A260007DBD3F /* C4Table.png in Resources */,
-				7A41D5B81565A261007DBD3F /* inception.mov in Resources */,
 				7A41D5BB1565A261007DBD3F /* iTunesArtwork.png in Resources */,
 				7A41D5BE1565A261007DBD3F /* C4Canvas.xib in Resources */,
 				7A41D5C01565A261007DBD3F /* C4LogoiPad-01.png in Resources */,
@@ -486,6 +470,7 @@
 				7A41D5DD1565A261007DBD3F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
